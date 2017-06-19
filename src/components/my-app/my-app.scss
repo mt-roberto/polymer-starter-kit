@@ -68,7 +68,13 @@ app-header paper-icon-button {
   }
 }
 
+iron-lazy-pages {
+  min-height: 100vh;
+}
+
 iron-lazy-pages > * {
+  position: absolute;
+
   opacity: 0;
 
   transform: translate3d(0, 50px, 0);
@@ -77,9 +83,9 @@ iron-lazy-pages > * {
 .transition--in {
   opacity: 0;
 
-  animation: .15s transition-in__animation forwards;
+  animation: .2s transition-in__animation forwards;
 }
 
 .transition--out {
-  animation: .15s transition-out__animation forwards;
+  animation: .2s transition-out__animation forwards;
 }

@@ -56,7 +56,7 @@ const bundleSass = (file) => {
 gulp.task('sass:elements', (callback) => {
 
   return gulp.src(ELEMENTS_SASS)
-             .pipe(modified('sass:dev'))
+             .pipe(modified('sass:elements'))
              .pipe(sass())
              .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
              .pipe(rename({

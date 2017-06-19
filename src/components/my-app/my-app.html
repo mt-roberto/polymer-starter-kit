@@ -152,7 +152,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         this._pageSelected = this.$.ironLazyPages.selectedItem;
 
-        this._pageSelected.classList.add('transition--in');
+        requestAnimationFrame(() =>
+            requestAnimationFrame(() =>
+                this._pageSelected.classList.add('transition--in')));
       }
 
       _showPage404() {
@@ -176,7 +178,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         clearTimeout(this._pageTimeout);
         this._pageTimeout =
-            setTimeout(() => this.set('route.path', path), 1000);
+            setTimeout(() => this.set('route.path', path), 200);
       }
 
       /**
