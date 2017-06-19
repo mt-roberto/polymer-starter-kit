@@ -43,25 +43,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer">
-        <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="view1">View One</a>
-          <a name="view2" href="view2">View Two</a>
-          <a name="view3" href="view3">View Three</a>
+          <a name="view1" href="view1"
+             on-tap="_navigationItemClicked"
+          >View One</a>
+          <a name="view2" href="view2"
+             on-tap="_navigationItemClicked"
+          >View Two</a>
+          <a name="view3" href="view3"
+             on-tap="_navigationItemClicked"
+          >View Three</a>
         </iron-selector>
       </app-drawer>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
-          </app-toolbar>
-        </app-header>
-
         <iron-lazy-pages
+            id="ironLazyPages"
             selected="[[page]]"
             attr-for-selected="name"
             fallback-selection="view404"
@@ -90,6 +89,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           rootPattern: String,
           routeData: Object,
           subroute: String,
+
+          // Latest selected view.
+          _pageSelected: Object,
         };
       }
 
@@ -105,6 +107,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Get root pattern for app-route, for more info about `rootPath` see:
         // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
         this.rootPattern = (new URL(this.rootPath)).pathname;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('request-change-page',
+                              this._onRequestChangePage);
       }
 
       _routePageChanged(page) {
@@ -125,18 +133,72 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       _pageChanged(page) {
+
         // Load page import on demand. Show 404 page if fails
         var resolvedPageUrl =
             this.resolveUrl('../my-' + page + '/my-' + page + '.html');
+
         Polymer.importHref(
-            resolvedPageUrl,
-            null,
-            this._showPage404.bind(this),
-            true);
+          resolvedPageUrl,
+          this._onViewLoaded.bind(this),
+          this._showPage404.bind(this),
+          true);
+      }
+
+      _onViewLoaded() {
+        if (this._pageSelected) {
+          this._pageSelected.classList.remove('transition--out');
+        }
+
+        this._pageSelected = this.$.ironLazyPages.selectedItem;
+
+        this._pageSelected.classList.add('transition--in');
       }
 
       _showPage404() {
         this.page = 'view404';
+      }
+
+      /**
+       * Fired when a components requires a page transition. It changes the
+       * route with a short delay to allow the view to transition out.
+       *
+       * @param {Event} e event handler.
+       *
+       * @private
+       */
+      _onRequestChangePage(e) {
+
+        let path = e.detail.path;
+
+        this._pageSelected.classList.remove('transition--in');
+        this._pageSelected.classList.add('transition--out');
+
+        clearTimeout(this._pageTimeout);
+        this._pageTimeout =
+            setTimeout(() => this.set('route.path', path), 1000);
+      }
+
+      /**
+       * Fired when one of the navigation items is clicked, it prevents the
+       * route to cahnge and it fires a `request-change-page` event.
+       *
+       * @param {Event} e event handler.
+       *
+       * @private
+       */
+      _navigationItemClicked(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        let target = e.target;
+        let href = target.getAttribute('href');
+
+        let eventDetail = { path: href, animation: 'forward' };
+        let customEvent =
+            new CustomEvent('request-change-page', {detail: eventDetail});
+
+        this.dispatchEvent(customEvent);
       }
     }
 

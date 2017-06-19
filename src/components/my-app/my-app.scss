@@ -39,3 +39,47 @@ app-header paper-icon-button {
 
   color: black;
 }
+
+@keyframes transition-in__animation {
+  from {
+    opacity: 0;
+
+    transform: translate3d(0, 50px, 0);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes transition-out__animation {
+  from {
+    opacity: 1;
+
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+
+    transform: translate3d(0, 50px, 0);
+  }
+}
+
+iron-lazy-pages > * {
+  opacity: 0;
+
+  transform: translate3d(0, 50px, 0);
+}
+
+.transition--in {
+  opacity: 0;
+
+  animation: .15s transition-in__animation forwards;
+}
+
+.transition--out {
+  animation: .15s transition-out__animation forwards;
+}
