@@ -65,9 +65,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
+          <my-view1 name="view1" bg-color="#7bb7fa"></my-view1>
+          <my-view2 name="view2" bg-color="#0ac2d2"></my-view2>
+          <my-view3 name="view3" bg-color="#f68dbb"></my-view3>
           <my-view404 name="view404"></my-view404>
         </iron-lazy-pages>
       </app-header-layout>
@@ -147,14 +147,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _onViewLoaded() {
         if (this._pageSelected) {
-          this._pageSelected.classList.remove('transition--out');
+          this._pageSelected.classList.remove('transition--in');
+          this._pageSelected.classList.add('transition--out');
         }
 
         this._pageSelected = this.$.ironLazyPages.selectedItem;
 
+        let bgColor = this._pageSelected.getAttribute('bg-color');
+
+        this.$.ironLazyPages.style.backgroundColor = bgColor;
+
         requestAnimationFrame(() =>
-            requestAnimationFrame(() =>
-                this._pageSelected.classList.add('transition--in')));
+            requestAnimationFrame(() => {
+                this._pageSelected.classList.remove('transition--out');
+                this._pageSelected.classList.add('transition--in')
+            }));
       }
 
       _showPage404() {
@@ -166,15 +173,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * route with a short delay to allow the view to transition out.
        *
        * @param {Event} e event handler.
-       *
        * @private
        */
       _onRequestChangePage(e) {
 
         let path = e.detail.path;
-
-        this._pageSelected.classList.remove('transition--in');
-        this._pageSelected.classList.add('transition--out');
 
         clearTimeout(this._pageTimeout);
         this._pageTimeout =
@@ -186,7 +189,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * route to cahnge and it fires a `request-change-page` event.
        *
        * @param {Event} e event handler.
-       *
        * @private
        */
       _navigationItemClicked(e) {

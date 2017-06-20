@@ -15,7 +15,7 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#2.0",
     "polymer": "Polymer/polymer#^2.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
-    "iron-lazy-pages": "^2.0.2"
+    "iron-lazy-pages": "git@github.com:robertosobachi/iron-lazy-pages#bd3d724219dc8725b20a19219bf745de01f28aae"
   },
   "resolutions": {
     "polymer": "^2.0.0"
