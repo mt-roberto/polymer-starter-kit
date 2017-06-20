@@ -42,9 +42,9 @@ app-header paper-icon-button {
 
 @keyframes transition-in__animation {
   from {
-    opacity: 0;
+    opacity: 1;
 
-    transform: translate3d(0, 50px, 0);
+    transform: translate3d(-100%, 0, 0);
   }
 
   to {
@@ -62,9 +62,9 @@ app-header paper-icon-button {
   }
 
   to {
-    opacity: 0;
+    opacity: 1;
 
-    transform: translate3d(0, 50px, 0);
+    transform: translate3d(100%, 0, 0);
   }
 }
 
@@ -75,9 +75,13 @@ iron-lazy-pages {
 iron-lazy-pages > * {
   position: absolute;
 
-  opacity: 0;
+  top: 0;
+  right: 0;
+  left: 0;
 
-  transform: translate3d(0, 50px, 0);
+  opacity: 1;
+
+  transform: translate3d(-100%, 0, 0);
 }
 
 .transition--in {
