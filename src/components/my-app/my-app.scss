@@ -41,6 +41,34 @@ app-header paper-icon-button {
   color: black;
 }
 
+@keyframes scaleDown {
+  from {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+
+    transform: scale(.8);
+  }
+}
+
+@keyframes scaleUpDown {
+  from {
+    opacity: 0;
+
+    transform: scale(1.2);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+}
+
 @keyframes transition-in__animation {
   from {
     opacity: 1;
@@ -104,9 +132,9 @@ iron-lazy-pages > * {
 .transition--in {
   z-index: 9;
 
-  animation: transition-in__animation .6s ease both;
+  animation: scaleUpDown .6s ease both;
 }
 
 .transition--out {
-  animation: transition-out__animation .7s ease-in-out both;
+  animation: scaleDown .7s ease-in-out both;
 }
