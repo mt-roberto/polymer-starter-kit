@@ -5,9 +5,25 @@
 
 gulp.task('build:dev', (callback) => {
 
-  const serveCommand = 'polymer serve --port ' + config.port;
+  let spawn = require('child_process').spawn;
+  let ls = spawn('polymer', ['serve', '--port', 'config.port']);
 
-  exec(serveCommand);
+  ls.stdout.on('data', function (data) {
+    log(fontCyanBold(data.toString()));
 
-  return callback();
+    return callback();
+  });
+
+  ls.stderr.on('data', function (data) {
+    console.log('Error: ' + data.toString());
+
+    return callback();
+  });
+
+  ls.on('exit', function (code) {
+    console.log('child process exited with code ' + code.toString());
+
+    return callback();
+  });
+
 });

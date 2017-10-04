@@ -15,12 +15,6 @@ const buildDone = function(err) {
 
     log(fontYellowBold('Finished building (' + getIsDevBuild() + ')'));
 
-    if (isDevBuild) {
-      const serveMessage = 'Application running under the following URLs: http://127.0.0.1:' + config.port;
-
-      log(fontCyanBold(serveMessage));
-    }
-
     return;
   }
 };
