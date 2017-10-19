@@ -18,7 +18,7 @@
     "iron-lazy-pages": "^2.0.2"
   },
   "resolutions": {
-    "polymer": "^2.1.1"
+    "polymer": "^2.2.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
